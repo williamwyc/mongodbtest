@@ -1,34 +1,24 @@
-var http = require('http');
-var querystring = require('querystring');
- 
-var postHTML = 
-  '<html><head><meta charset="utf-8"><title>菜鸟教程 Node.js 实例</title></head>' +
-  '<body>' +
-  '<form method="post">' +
-  '网站名： <input name="name"><br>' +
-  '网站 URL： <input name="url"><br>' +
-  '<input type="submit">' +
-  '</form>' +
-  '</body></html>';
- 
-http.createServer(function (req, res) {
-  var body = "";
-  req.on('data', function (chunk) {
-    body += chunk;
-  });
-  req.on('end', function () {
-    // 解析参数
-    body = querystring.parse(body);
-    // 设置响应头部信息及编码
-    res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
- 
-    if(body.name && body.url) { // 输出提交的数据
-        res.write("网站名：" + body.name);
-        res.write("<br>");
-        res.write("网站 URL：" + body.url);
-    } else {  // 输出表单
-        res.write(postHTML);
-    }
-    res.end();
-  });
-}).listen(80);
+var express        = require('express');
+var app            = express();
+var bodyParser     = require('body-parser');
+var methodOverride = require('method-override');
+var fs = require("fs");
+var port = process.env.PORT || 3000;
+var MongoClient = require('mongodb').MongoClient
+
+app.use(bodyParser.json()); // parse application/json 
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
+app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
+app.use(express.static(__dirname + '/public'));
+
+MongoClient.connect('mongodb://localhost:27017/hw2', function(err, client){
+  if(err){
+      console.log(err);
+  }else{
+      console.log("success connet to db");
+  }
+  db = client.db('hw2');
+  collection = db.collection("factbook")
+  
+})
