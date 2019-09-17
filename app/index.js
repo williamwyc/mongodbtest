@@ -10,13 +10,15 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(express.static(__dirname + '/public'));
 
-MongoClient.connect('mongodb://localhost:27017/hw2', function(err, client){
+MongoClient.connect('mongodb://localhost:27017', function(err, client){
   if(err){
       console.log(err);
   }else{
       console.log("success connet to db");
   }
   db = client.db('hw2');
-  collection = db.collection("factbook")
-  
+  collection = db.collection("test")
+  var json_dir = 'test.json';
+  var json_file = JSON.parse(fs.readFileSync(json_dir).toString());
+  collection.insert(json_file, {checkKeys: false})
 })
