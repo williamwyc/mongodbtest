@@ -17,7 +17,7 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client){
       console.log("success connet to db");
   }
   db = client.db('hw2');
-  collection = db.collection("test")
+  collection = db.collection("factbook")
   var file_dir = './factbook';
   fs.readdir(file_dir, function(err, folders) {
     if (err) {
