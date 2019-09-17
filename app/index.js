@@ -18,7 +18,28 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client){
   }
   db = client.db('hw2');
   collection = db.collection("test")
-  var json_dir = 'test.json';
-  var json_file = JSON.parse(fs.readFileSync(json_dir).toString());
-  collection.insertOne(json_file, {checkKeys: false})
+  var file_dir = './factbook';
+  fs.readdir(file_dir, function(err, folders) {
+    if (err) {
+      console.log("Error finding directory");
+    } else {
+      folders.forEach(function(folder) {
+        var sub_dir = file_dir + '/' + folder;
+        fs.readdir(file_dir + '/' + folder, function(err, files) {
+          if (err) {
+            console.log("Error finding sub directory " + sub_dir);
+          } else {
+            files.forEach(function(file) {
+              var json_dir = sub_dir + '/' + file;
+              var json_file = JSON.parse(fs.readFileSync(json_dir).toString());
+              collection.insert(json_file, {checkKeys: false})
+                .catch(function(err) {
+                  console.log('failed to insert data ' + json_dir);
+                  console.log(err);
+                })
+            })
+          }
+        })
+      })
+    }
 })
