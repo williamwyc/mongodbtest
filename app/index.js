@@ -20,5 +20,5 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client){
   collection = db.collection("test")
   var json_dir = 'test.json';
   var json_file = JSON.parse(fs.readFileSync(json_dir).toString());
-  collection.insert(json_file, {checkKeys: false})
+  collection.insertOne(json_file, {checkKeys: false})
 })
