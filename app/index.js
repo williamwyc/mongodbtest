@@ -1,10 +1,9 @@
 var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
+var MongoClient = require('mongodb').MongoClient
 var fs = require("fs");
 var port = process.env.PORT || 3000;
-var MongoClient = require('mongodb').MongoClient
 
 app.use(bodyParser.json()); // parse application/json 
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
