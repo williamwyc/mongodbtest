@@ -33,13 +33,10 @@ MongoClient.connect('mongodb://localhost:27017', function(err, client){
               var json_dir = sub_dir + '/' + file;
               var json_file = JSON.parse(fs.readFileSync(json_dir).toString());
               collection.insert(json_file, {checkKeys: false})
-                .catch(function(err) {
-                  console.log('failed to insert data ' + json_dir);
-                  console.log(err);
-                })
             })
           }
         })
       })
     }
+  })
 })
